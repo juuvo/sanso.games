@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1024" height="1024" viewBox="0 0 1254 1254">
+  <title>サンソー 三索アイコン</title>
+  <desc>白背景に緑の三索。元画像を滑らかなベジェ曲線で再現したベクターアイコン。</desc>
+  <defs>
+    <path id="bamboo" fill-rule="evenodd" d="M 0 0 C -38 0 -75 12 -89 32 C -99 47 -91 56 -78 61 C -60 69 -57 85 -57 108 L -57 170 C -57 192 -62 199 -78 207 C -99 219 -96 239 -78 249 C -61 258 -57 266 -57 287 L -57 362 C -57 380 -62 389 -78 395 C -99 402 -96 420 -79 432 C -37 466 37 466 79 432 C 96 420 99 402 78 395 C 62 389 57 380 57 362 L 57 287 C 57 266 61 258 78 249 C 96 239 99 219 78 207 C 62 199 57 192 57 170 L 57 108 C 57 85 60 69 78 61 C 91 56 99 47 89 32 C 75 12 38 0 0 0 Z M 0 59 C -11 59 -18 70 -18 86 L -18 185 C -18 201 -11 211 0 211 C 11 211 18 201 18 185 L 18 86 C 18 70 11 59 0 59 Z M 0 252 C -11 252 -18 262 -18 278 L -18 378 C -18 394 -11 404 0 404 C 11 404 18 394 18 378 L 18 278 C 18 262 11 252 0 252 Z"/>
+  </defs>
+  <rect id="background" width="1254" height="1254" fill="#FFFFFF"/>
+  <g id="bamboo-symbols" fill="#00752F">
+    <use xlink:href="#bamboo" transform="translate(627 138)"/>
+    <use xlink:href="#bamboo" transform="translate(439 635)"/>
+    <use xlink:href="#bamboo" transform="translate(815 635)"/>
+  </g>
+</svg>
