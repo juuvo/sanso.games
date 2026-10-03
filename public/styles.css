@@ -351,6 +351,23 @@ a:hover {
 .article-question .article-situation {
   margin-top: 8px;
 }
+/* 問題のドラ表示牌と河 (小さい牌の絵)。手牌の上に横に並べ、狭い画面では折り返す */
+.article-question-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 32px;
+  margin-top: 12px;
+}
+.article-info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.article-info-label {
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
 /* 牌が画面より広いときは手牌だけ横にスクロール (ページは横に動かさない) */
 .article-hand {
   margin-top: 12px;

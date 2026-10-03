@@ -15,6 +15,8 @@ const articles = defineCollection({
     question: z
       .object({
         situation: z.string(), // 「東場・親・6巡目・ドラ 二索」
+        doraIndicator: z.string().optional(), // ドラ表示牌 (Hand の書き方。牌の絵で出す)
+        river: z.string().optional(), // 自分の河 (切った順。牌の絵で出す)
         hand: z.string(), // 手牌 13 枚 (Hand の書き方)
         draw: z.string().optional(), // ツモ牌
         prompt: z.string(), // 「何を切りますか？」

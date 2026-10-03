@@ -46,6 +46,22 @@ const isoDate = (value: Date) => value.toISOString().slice(0, 10);
           <section class="article-question">
             <h2>問題</h2>
             <p class="article-situation">{question.situation}</p>
+            {(question.doraIndicator || question.river) && (
+              <div class="article-question-info">
+                {question.doraIndicator && (
+                  <div class="article-info-item">
+                    <span class="article-info-label">ドラ表示牌</span>
+                    <Hand tiles={question.doraIndicator} size="small" />
+                  </div>
+                )}
+                {question.river && (
+                  <div class="article-info-item">
+                    <span class="article-info-label">河</span>
+                    <Hand tiles={question.river} size="small" />
+                  </div>
+                )}
+              </div>
+            )}
             <div class="article-hand">
               <Hand tiles={question.hand} draw={question.draw} />
             </div>
