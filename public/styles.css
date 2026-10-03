@@ -1,4 +1,5 @@
-/* 色はアプリ (tsumo の src/constants/colors.ts) と同じ。白地×緑、暗い画面は A 墨 */
+/* 色はアプリ (サンソーの src/constants/colors.ts) の明るい画面と同じ白地×緑。サイトは端末がダークモードでも白のまま
+   (2026-10-04 のユーザー決定「白固定でいいや」) */
 :root {
   --color-background: #ffffff;
   --color-text: #1a1a1a;
@@ -11,22 +12,7 @@
   --color-worse: #b07a12;
   --color-blunder: #b03a3a;
   --font-body: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", sans-serif;
-  color-scheme: light dark;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: #161615;
-    --color-text: #ecece8;
-    --color-text-muted: #9c9c95;
-    --color-divider: #33332f;
-    --color-rule: #282826;
-    --color-accent: #2e9b57;
-    --color-equal: #2e9b57;
-    --color-close: #7e9cd0;
-    --color-worse: #d4a23c;
-    --color-blunder: #e06b6b;
-  }
+  color-scheme: light;
 }
 
 *,
