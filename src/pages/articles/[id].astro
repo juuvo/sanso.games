@@ -1,0 +1,91 @@
+---
+// 記事のページ (2026-10-04 のユーザー決定、モック「sanso.games の記事の見た目」の記事 B): 何切るの問題があれば本文の前に
+// 出し、本文 (答えと解説) は「答えを見る」でたたむ (details。スクリプトを使わない)。最後にアプリへの案内とほかの記事
+import { render } from 'astro:content';
+
+import Hand from '../../components/Hand.astro';
+import Base from '../../layouts/Base.astro';
+import { formatDate, getArticles, type Article } from '../../lib/articles';
+
+export async function getStaticPaths() {
+  const articles = await getArticles();
+  return articles.map((article) => ({ params: { id: article.id }, props: { article, articles } }));
+}
+
+interface Props {
+  article: Article;
+  articles: Article[];
+}
+
+const { article, articles } = Astro.props;
+const { Content } = await render(article);
+const { title, description, date, updated, tags, question } = article.data;
+const others = articles.filter((item) => item.id !== article.id).slice(0, 3);
+const isoDate = (value: Date) => value.toISOString().slice(0, 10);
+---
+
+<Base title={`${title} - サンソー`} description={description} current="articles" ogType="article">
+  <main class="article">
+    {
+      tags.length > 0 && (
+        <ul class="article-tags">
+          {tags.map((tag) => (
+            <li>{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+    <h1>{title}</h1>
+    <p class="article-date">
+      <time datetime={isoDate(date)}>{formatDate(date)}</time>
+      {updated && <span>(更新 <time datetime={isoDate(updated)}>{formatDate(updated)}</time>)</span>}
+    </p>
+    {
+      question ? (
+        <>
+          <section class="article-question">
+            <h2>問題</h2>
+            <p class="article-situation">{question.situation}</p>
+            <div class="article-hand">
+              <Hand tiles={question.hand} draw={question.draw} />
+            </div>
+            <p>{question.prompt}</p>
+          </section>
+          <details class="article-answer">
+            <summary>答えを見る</summary>
+            <div class="article-body">
+              <Content components={{ Hand }} />
+            </div>
+          </details>
+        </>
+      ) : (
+        <div class="article-body">
+          <Content components={{ Hand }} />
+        </div>
+      )
+    }
+    <aside class="article-app">
+      <div>
+        <p class="article-app-title">この形をアプリで練習する</p>
+        <p class="article-app-text">
+          配牌からツモ和了まで一人で打ち、切った牌を ◎○△✕ で判定します。
+        </p>
+      </div>
+      <a class="article-app-link" href="https://apps.apple.com/jp/app/id6817753196">App Store で見る</a>
+    </aside>
+    {
+      others.length > 0 && (
+        <section class="article-others">
+          <h2>ほかの記事</h2>
+          <ul>
+            {others.map((item) => (
+              <li>
+                <a href={`/articles/${item.id}`}>{item.data.title}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </main>
+</Base>

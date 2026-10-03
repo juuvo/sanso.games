@@ -1,0 +1,577 @@
+/* 色はアプリ (tsumo の src/constants/colors.ts) と同じ。白地×緑、暗い画面は A 墨 */
+:root {
+  --color-background: #ffffff;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b6b66;
+  --color-divider: #e3e3df;
+  --color-rule: #efefec;
+  --color-accent: #00752f;
+  --font-body: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", sans-serif;
+  color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #161615;
+    --color-text: #ecece8;
+    --color-text-muted: #9c9c95;
+    --color-divider: #33332f;
+    --color-rule: #282826;
+    --color-accent: #2e9b57;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+}
+
+a {
+  color: var(--color-accent);
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* 見出しの行 (各ページの上) */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 64px;
+  border-bottom: 1px solid var(--color-divider);
+}
+
+.site-header a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--color-text);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.site-header img {
+  width: 32px;
+  height: 32px;
+  border-radius: 7px;
+}
+
+/* トップ */
+.hero {
+  padding: 96px 0 80px;
+  text-align: center;
+}
+
+.hero-icon {
+  width: 128px;
+  height: 128px;
+  border-radius: 28px;
+  box-shadow: 0 0 0 1px var(--color-divider);
+}
+
+.hero h1 {
+  margin: 24px 0 0;
+  font-size: 40px;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+}
+
+.hero-subtitle {
+  margin: 8px 0 0;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.hero-lead {
+  max-width: 30em;
+  margin: 24px auto 0;
+  color: var(--color-text-muted);
+}
+
+/* Apple のバッジは画面の上で高さ 40px 以上にする決まり */
+.hero-store {
+  display: inline-block;
+  margin-top: 32px;
+}
+
+.hero-store img {
+  display: block;
+  width: auto;
+  height: 48px;
+}
+
+/* 規約・ポリシー・サポートの本文 */
+.document {
+  padding: 48px 0 64px;
+}
+
+.document h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.4;
+}
+
+.document-date {
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.document h2 {
+  margin: 48px 0 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--color-divider);
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.document h3 {
+  margin: 32px 0 0;
+  font-size: 17px;
+  line-height: 1.5;
+}
+
+.document p,
+.document ul,
+.document ol {
+  margin: 12px 0 0;
+}
+
+.document ul,
+.document ol {
+  padding-left: 1.5em;
+}
+
+.document li + li {
+  margin-top: 4px;
+}
+
+.document-note {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+/* 外部に送信する情報の一覧。狭い画面では横にスクロールせず、行ごとに縦に積む */
+.transmission-table {
+  width: 100%;
+  margin-top: 16px;
+  border-collapse: collapse;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.transmission-table th,
+.transmission-table td {
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--color-rule);
+  text-align: left;
+  vertical-align: top;
+}
+
+.transmission-table thead th {
+  border-bottom-color: var(--color-divider);
+  color: var(--color-text-muted);
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.transmission-table tbody th {
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .transmission-table thead {
+    display: none;
+  }
+
+  .transmission-table tr {
+    display: block;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-rule);
+  }
+
+  .transmission-table th,
+  .transmission-table td {
+    display: block;
+    padding: 2px 0;
+    border: 0;
+  }
+
+  .transmission-table td::before {
+    content: attr(data-label);
+    display: block;
+    color: var(--color-text-muted);
+    font-size: 12px;
+  }
+}
+
+.contact-email {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+/* 下の行 (各ページ共通) */
+.site-footer {
+  padding: 32px 0 48px;
+  border-top: 1px solid var(--color-divider);
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+
+.site-footer ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer a {
+  color: var(--color-text-muted);
+}
+
+.site-footer a[aria-current="page"] {
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.site-footer p {
+  margin: 16px 0 0;
+}
+
+/* 見出しの行の右: 記事・アプリ */
+.site-nav {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+}
+.site-header .site-nav a {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+.site-header .site-nav a[aria-current="page"] {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+/* 記事の一覧 (一覧 A): 日付・題・一行の説明を線で区切る */
+.articles {
+  padding: 48px 0 64px;
+}
+.articles h1 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.4;
+}
+.articles-lead,
+.articles-empty {
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+  font-size: 15px;
+}
+.article-list {
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-divider);
+}
+.article-list li {
+  border-bottom: 1px solid var(--color-divider);
+}
+.article-list a {
+  display: block;
+  padding: 20px 0;
+  color: var(--color-text);
+  text-decoration: none;
+}
+.article-list time {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+.article-list-title {
+  display: block;
+  margin-top: 4px;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.article-list a:hover .article-list-title {
+  color: var(--color-accent);
+}
+.article-list-description {
+  display: block;
+  margin-top: 4px;
+  color: var(--color-text-muted);
+  font-size: 15px;
+}
+
+/* 記事のページ (記事 B): 問題の後ろに「答えを見る」でたたんだ本文 */
+.article {
+  padding: 48px 0 64px;
+}
+.article-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+}
+.article-tags li {
+  padding: 1px 10px;
+  border: 1px solid var(--color-divider);
+  border-radius: 12px;
+  color: var(--color-text-muted);
+}
+.article h1 {
+  margin: 12px 0 0;
+  font-size: 28px;
+  line-height: 1.4;
+}
+.article-date {
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+.article-date span {
+  margin-left: 8px;
+}
+.article h2 {
+  margin: 32px 0 0;
+  font-size: 20px;
+  line-height: 1.5;
+}
+.article-question {
+  margin-top: 32px;
+}
+.article-question h2 {
+  margin: 0;
+}
+.article-situation {
+  margin: 8px 0 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+.article-question p {
+  margin: 12px 0 0;
+}
+.article-question .article-situation {
+  margin-top: 8px;
+}
+/* 牌が画面より広いときは手牌だけ横にスクロール (ページは横に動かさない) */
+.article-hand {
+  margin-top: 12px;
+  padding: 10px 0 4px;
+  overflow-x: auto;
+}
+.article-answer {
+  margin-top: 24px;
+  border-top: 1px solid var(--color-divider);
+  border-bottom: 1px solid var(--color-divider);
+}
+.article-answer summary {
+  padding: 14px 0;
+  color: var(--color-accent);
+  font-weight: 700;
+  cursor: pointer;
+}
+.article-answer[open] summary {
+  border-bottom: 1px solid var(--color-divider);
+}
+.article-answer .article-body {
+  padding-bottom: 24px;
+}
+.article-body p,
+.article-body ul,
+.article-body ol {
+  margin: 12px 0 0;
+}
+.article-body ul,
+.article-body ol {
+  padding-left: 1.5em;
+}
+.article-body h2 {
+  margin-top: 32px;
+}
+.article-body h3 {
+  margin: 24px 0 0;
+  font-size: 17px;
+  line-height: 1.5;
+}
+.article-body .hand {
+  margin: 12px 0 0;
+}
+/* 期待値の表 (Markdown の表) */
+.article-body table {
+  width: 100%;
+  margin: 16px 0 0;
+  border-collapse: collapse;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+.article-body th,
+.article-body td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--color-rule);
+  text-align: left;
+}
+.article-body thead th {
+  border-bottom: 1px solid var(--color-divider);
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+.article-body td:not(:first-child),
+.article-body th:not(:first-child) {
+  text-align: right;
+}
+/* アプリへの案内 */
+.article-app {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 40px;
+  padding: 20px;
+  border: 1px solid var(--color-divider);
+  border-radius: 12px;
+}
+.article-app p {
+  margin: 0;
+}
+.article-app-title {
+  font-weight: 700;
+}
+.article-app-text {
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+.article-app-link {
+  display: inline-flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 22px;
+  background: var(--color-text);
+  color: var(--color-background);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.article-others {
+  margin-top: 40px;
+}
+.article-others h2 {
+  margin: 0;
+  font-size: 17px;
+}
+.article-others ul {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.article-others li {
+  border-bottom: 1px solid var(--color-divider);
+}
+.article-others a {
+  display: block;
+  padding: 12px 0;
+  color: var(--color-text);
+  text-decoration: none;
+}
+.article-others a:hover {
+  color: var(--color-accent);
+}
+
+/* 手牌 (src/components/Hand.astro)。牌の絵はアプリと同じ、地と厚みはアプリの色 (暗い画面でも牌は白いまま) */
+.hand {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  width: max-content;
+}
+.tile {
+  flex: none;
+  display: block;
+  width: 40px;
+  padding-bottom: 6px;
+  border-radius: 5px;
+  background: #1a7560;
+  border-bottom: 1px solid #0f4e40;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+.tile-face {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 54px;
+  border: 1px solid #d4d4d4;
+  border-radius: 5px;
+  background: #ffffff;
+}
+.tile-face img {
+  display: block;
+  width: 78%;
+  height: auto;
+}
+.tile-drawn {
+  margin-left: 12px;
+}
+.hand-small .tile {
+  width: 26px;
+  padding-bottom: 4px;
+  border-radius: 3px;
+}
+.hand-small .tile-face {
+  height: 35px;
+  border-radius: 3px;
+}
+.hand-small .tile-drawn {
+  margin-left: 8px;
+}
+/* 狭い画面では牌を少し小さく (14 枚 + すき間が 375px の画面の幅に収まる大きさ) */
+@media (max-width: 600px) {
+  .hand-large .tile {
+    width: 23px;
+    padding-bottom: 4px;
+    border-radius: 3px;
+  }
+  .hand-large .tile-face {
+    height: 31px;
+    border-radius: 3px;
+  }
+  .hand-large .tile-drawn {
+    margin-left: 8px;
+  }
+}
+

@@ -1,0 +1,77 @@
+---
+// サイトの共通の枠: head (題・説明・OGP・アイコン・CSS・RSS)、上の見出しの行、下のリンク。スクリプトもページの中の
+// style も使わない (CSP)
+interface Props {
+  title: string; // <title> にそのまま入れる
+  description?: string;
+  current?: 'articles' | 'terms' | 'privacy' | 'support'; // 今いるページ (リンクに aria-current)
+  header?: boolean; // 上の見出しの行 (トップには出さない)
+  ogType?: 'website' | 'article';
+}
+
+const DEFAULT_DESCRIPTION =
+  '配牌からツモ和了まで一人で打ち、切った牌を ◎○△✕ で判定する麻雀の練習アプリです。';
+const {
+  title,
+  description = DEFAULT_DESCRIPTION,
+  current,
+  header = true,
+  ogType = 'website',
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL('/apple-touch-icon.png', Astro.site);
+const pageOf = (name: Props['current']) => (current === name ? 'page' : undefined);
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content="サンソー" />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="alternate" type="application/rss+xml" title="サンソーの記事" href="/rss.xml" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="page">
+      {
+        header && (
+          <header class="site-header">
+            <a href="/">
+              <img src="/favicon.svg" alt="" width="32" height="32" />
+              サンソー
+            </a>
+            <nav class="site-nav">
+              <a href="/articles" aria-current={pageOf('articles')}>
+                記事
+              </a>
+              <a href="/">アプリ</a>
+            </nav>
+          </header>
+        )
+      }
+      <slot />
+      <footer class="site-footer">
+        <ul>
+          <li><a href="/articles" aria-current={pageOf('articles')}>記事</a></li>
+          <li><a href="/terms" aria-current={pageOf('terms')}>利用規約</a></li>
+          <li><a href="/privacy" aria-current={pageOf('privacy')}>プライバシーポリシー</a></li>
+          <li><a href="/support" aria-current={pageOf('support')}>サポート</a></li>
+        </ul>
+        <p>© 2026 JUUVO</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,38 @@
+---
+// 記事の一覧 (2026-10-04 のユーザー決定、モック「sanso.games の記事の見た目」の一覧 A): 日付・題・一行の説明を 1px の
+// 線で区切って新しい順に
+import Base from '../../layouts/Base.astro';
+import { formatShortDate, getArticles } from '../../lib/articles';
+
+const articles = await getArticles();
+---
+
+<Base
+  title="記事 - サンソー"
+  description="牌効率と何切るの考え方を、和了率と打点の期待値で解説します。"
+  current="articles"
+>
+  <main class="articles">
+    <h1>記事</h1>
+    <p class="articles-lead">牌効率と何切るの考え方を、和了率と打点の期待値で解説します。</p>
+    {
+      articles.length === 0 ? (
+        <p class="articles-empty">記事はまだありません。</p>
+      ) : (
+        <ul class="article-list">
+          {articles.map((article) => (
+            <li>
+              <a href={`/articles/${article.id}`}>
+                <time datetime={article.data.date.toISOString().slice(0, 10)}>
+                  {formatShortDate(article.data.date)}
+                </time>
+                <span class="article-list-title">{article.data.title}</span>
+                <span class="article-list-description">{article.data.description}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </main>
+</Base>
