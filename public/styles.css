@@ -68,7 +68,12 @@ a:hover {
   max-width: 1120px;
 }
 
-/* 見出しの行 (各ページの上) */
+/* 見出しの行 (各ページの上)。どのページでも同じ幅 (トップの LP と同じ 1120) */
+.site-header-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
 .site-header {
   display: flex;
   align-items: center;
