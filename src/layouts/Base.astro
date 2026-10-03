@@ -4,8 +4,9 @@
 interface Props {
   title: string; // <title> にそのまま入れる
   description?: string;
-  current?: 'articles' | 'terms' | 'privacy' | 'support'; // 今いるページ (リンクに aria-current)
-  header?: boolean; // 上の見出しの行 (トップには出さない)
+  current?: 'app' | 'articles' | 'terms' | 'privacy' | 'support'; // 今いるページ (リンクに aria-current)
+  header?: boolean; // 上の見出しの行
+  wide?: boolean; // 中身の幅を広く (トップの LP。ほかのページは本文の幅 720)
   ogType?: 'website' | 'article';
 }
 
@@ -16,6 +17,7 @@ const {
   description = DEFAULT_DESCRIPTION,
   current,
   header = true,
+  wide = false,
   ogType = 'website',
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -45,7 +47,7 @@ const pageOf = (name: Props['current']) => (current === name ? 'page' : undefine
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <div class="page">
+    <div class={wide ? 'page page-wide' : 'page'}>
       {
         header && (
           <header class="site-header">
@@ -57,7 +59,9 @@ const pageOf = (name: Props['current']) => (current === name ? 'page' : undefine
               <a href="/articles" aria-current={pageOf('articles')}>
                 記事
               </a>
-              <a href="/">アプリ</a>
+              <a href="/" aria-current={pageOf('app')}>
+                アプリ
+              </a>
             </nav>
           </header>
         )

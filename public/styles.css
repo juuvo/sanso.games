@@ -6,6 +6,10 @@
   --color-divider: #e3e3df;
   --color-rule: #efefec;
   --color-accent: #00752f;
+  --color-equal: #00752f;
+  --color-close: #4c6fa5;
+  --color-worse: #b07a12;
+  --color-blunder: #b03a3a;
   --font-body: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic UI", sans-serif;
   color-scheme: light dark;
 }
@@ -18,6 +22,10 @@
     --color-divider: #33332f;
     --color-rule: #282826;
     --color-accent: #2e9b57;
+    --color-equal: #2e9b57;
+    --color-close: #7e9cd0;
+    --color-worse: #d4a23c;
+    --color-blunder: #e06b6b;
   }
 }
 
@@ -55,6 +63,10 @@ a:hover {
   margin: 0 auto;
   padding: 0 16px;
 }
+/* トップ (LP) は広く */
+.page-wide {
+  max-width: 1120px;
+}
 
 /* 見出しの行 (各ページの上) */
 .site-header {
@@ -78,50 +90,6 @@ a:hover {
   width: 32px;
   height: 32px;
   border-radius: 7px;
-}
-
-/* トップ */
-.hero {
-  padding: 96px 0 80px;
-  text-align: center;
-}
-
-.hero-icon {
-  width: 128px;
-  height: 128px;
-  border-radius: 28px;
-  box-shadow: 0 0 0 1px var(--color-divider);
-}
-
-.hero h1 {
-  margin: 24px 0 0;
-  font-size: 40px;
-  line-height: 1.3;
-  letter-spacing: 0.08em;
-}
-
-.hero-subtitle {
-  margin: 8px 0 0;
-  color: var(--color-accent);
-  font-weight: 700;
-}
-
-.hero-lead {
-  max-width: 30em;
-  margin: 24px auto 0;
-  color: var(--color-text-muted);
-}
-
-/* Apple のバッジは画面の上で高さ 40px 以上にする決まり */
-.hero-store {
-  display: inline-block;
-  margin-top: 32px;
-}
-
-.hero-store img {
-  display: block;
-  width: auto;
-  height: 48px;
 }
 
 /* 規約・ポリシー・サポートの本文 */
@@ -572,6 +540,312 @@ a:hover {
   }
   .hand-large .tile-drawn {
     margin-left: 8px;
+  }
+}
+
+/* トップ (LP)。モック「sanso.games のトップ (LP)」の B2 (ユーザーの直し入り) */
+.lp {
+  padding-bottom: 32px;
+}
+.lp h2 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.4;
+}
+.lp ul {
+  margin: 12px 0 0;
+  padding-left: 1.2em;
+}
+/* 一番上: 左に見出しとボタン、右に傾けた対局画面 */
+.lp-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+  gap: 40px;
+  align-items: center;
+  padding-top: 64px;
+}
+.lp-kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  color: var(--color-accent);
+  font-weight: 700;
+}
+.lp-kicker img,
+.lp-cta-icon {
+  border-radius: 22%;
+  box-shadow: 0 0 0 1px var(--color-divider);
+}
+.lp-hero h1 {
+  margin: 8px 0 0;
+  font-size: 38px;
+  line-height: 1.35;
+}
+.lp-lead {
+  margin: 20px 0 0;
+  color: var(--color-text-muted);
+}
+/* Apple のバッジは画面の上で高さ 40px 以上にする決まり */
+.lp-store {
+  display: inline-block;
+  margin-top: 28px;
+}
+.lp-store img {
+  display: block;
+  width: auto;
+  height: 48px;
+}
+.lp-hero-image,
+.lp-feature-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+/* 枠で囲む所 (書き出し・和了率 × 打点・ルール・最後の案内)。面の色は付けず 1px の線 */
+.lp-box {
+  margin-top: 96px;
+  padding: 32px;
+  border: 1px solid var(--color-divider);
+  border-radius: 16px;
+}
+.lp-box p {
+  margin: 12px 0 0;
+}
+.lp-intro {
+  margin-top: 72px;
+  text-align: center;
+}
+.lp-intro p {
+  max-width: 36em;
+  margin: 20px auto 0;
+  font-size: 17px;
+}
+.lp .lp-judgements {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lp-judgement {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+.lp-judgement-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+}
+.lp-judgement-equal {
+  color: var(--color-equal);
+}
+.lp-judgement-close {
+  color: var(--color-close);
+}
+.lp-judgement-worse {
+  color: var(--color-worse);
+}
+.lp-judgement-blunder {
+  color: var(--color-blunder);
+}
+/* できること: 文と画像を左右交互に */
+.lp-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+  gap: 40px;
+  align-items: center;
+  margin-top: 96px;
+}
+.lp-feature-reverse {
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.9fr);
+}
+.lp-feature-reverse .lp-feature-text {
+  order: 2;
+}
+.lp-feature-text p,
+.lp-feature-text ul {
+  margin-top: 12px;
+}
+/* 和了率 × 平均打点 = 期待値 */
+.lp-formula-box h2 {
+  text-align: center;
+}
+.lp-formula {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 20px;
+  margin-top: 16px;
+  padding: 20px 0;
+  border-top: 1px solid var(--color-divider);
+  border-bottom: 1px solid var(--color-divider);
+  text-align: center;
+}
+.lp-formula-term {
+  display: flex;
+  flex-direction: column;
+}
+.lp-formula-word {
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+.lp-formula-result {
+  color: var(--color-accent);
+}
+.lp-formula-note {
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+.lp-formula-operator {
+  color: var(--color-text-muted);
+  font-size: 26px;
+}
+.lp-rules h2 {
+  font-size: 22px;
+}
+/* 料金・よくある質問・記事 */
+.lp-section {
+  margin-top: 96px;
+}
+.lp .lp-section-title {
+  font-size: 26px;
+  text-align: center;
+}
+.lp-plans {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+.lp-plan {
+  padding: 24px;
+  border: 1px solid var(--color-divider);
+  border-radius: 12px;
+  font-size: 15px;
+}
+.lp-plan-premium {
+  padding: 23px;
+  border: 2px solid var(--color-accent);
+}
+.lp-plan p {
+  margin: 0;
+}
+.lp-plan-name {
+  font-size: 18px;
+  font-weight: 700;
+}
+.lp .lp-plan-price {
+  margin-top: 4px;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
+.lp-faq {
+  margin-top: 24px;
+  border-top: 1px solid var(--color-divider);
+}
+.lp-faq details {
+  border-bottom: 1px solid var(--color-divider);
+}
+.lp-faq summary {
+  padding: 16px 0;
+  font-weight: 700;
+  cursor: pointer;
+}
+.lp-faq p {
+  margin: 0 0 16px;
+}
+.lp-articles-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.lp-articles-header h2 {
+  font-size: 22px;
+}
+.lp-articles-header a {
+  font-size: 14px;
+}
+.lp .lp-articles ul {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--color-divider);
+}
+.lp-articles li {
+  border-bottom: 1px solid var(--color-divider);
+}
+.lp-articles li a {
+  display: block;
+  padding: 14px 0;
+  color: var(--color-text);
+  text-decoration: none;
+}
+.lp-articles time {
+  margin-right: 16px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+/* 最後の案内: アイコン・名前・バッジ */
+.lp-cta {
+  padding: 48px 24px;
+  text-align: center;
+}
+.lp-cta-icon {
+  display: block;
+  margin: 0 auto;
+}
+.lp .lp-cta-title {
+  margin: 16px 0 0;
+  color: var(--color-accent);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.lp-cta .lp-store {
+  margin-top: 20px;
+}
+/* スマホ: 1 列に積む (文の後に画像) */
+@media (max-width: 760px) {
+  .lp-hero,
+  .lp-feature,
+  .lp-feature-reverse,
+  .lp-plans {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .lp-hero {
+    padding-top: 40px;
+  }
+  .lp-hero h1 {
+    font-size: 30px;
+  }
+  .lp-feature,
+  .lp-box,
+  .lp-section {
+    margin-top: 64px;
+  }
+  .lp-feature-reverse .lp-feature-text {
+    order: 0;
+  }
+  .lp-box {
+    padding: 24px 20px;
+  }
+  .lp .lp-cta-title {
+    font-size: 20px;
   }
 }
 

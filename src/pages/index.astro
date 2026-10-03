@@ -1,19 +1,243 @@
 ---
+// トップ (アプリの LP)。2026-10-04 のユーザー決定: モック「sanso.games のトップ (LP)」の B2 をユーザーが直した版 (文言は
+// App Store Connect の説明文と 1 枚目のスクショの見出し)。付箋の 3 か所 (見出しの行・一番上の「サンソー」の前・最後の枠
+// の上) にアプリのアイコン
 import Base from '../layouts/Base.astro';
+import { formatShortDate, getArticles } from '../lib/articles';
+
+const articles = (await getArticles()).slice(0, 2);
+const APP_STORE_URL = 'https://apps.apple.com/jp/app/id6817753196';
+const judgements = [
+  { symbol: '◎', name: '最良', tone: 'equal' },
+  { symbol: '○', name: '良', tone: 'close' },
+  { symbol: '△', name: '可', tone: 'worse' },
+  { symbol: '×', name: '不可', tone: 'blunder' },
+];
+// 画像と文を左右交互に並べる節 (画像はスマホの枠に入れた画面。もらった元の素材を切らずに縮めた WebP)
+const features = [
+  {
+    title: 'なぜその牌なのかが分かる',
+    items: [
+      '候補の打牌ごとの期待値・和了率・平均打点の表',
+      '受け入れの種類と枚数を、牌の絵で',
+      '打点の内訳を、門前ツモと役ごとの上乗せに分けて',
+      '「ドラの 5索 を残す方が、打点が 1,080 点高い」のような理由の一文',
+    ],
+    image: 'analysis',
+    alt: '間違えた手の詳細の画面。打牌と最善の牌、受け入れ、期待値の表',
+  },
+  {
+    title: '局の後に振り返る',
+    items: [
+      'その局の精度 (%) と ◎○△× の数',
+      '巡ごとのグラフから、どこで損をしたかをたどれます',
+      '打った局は牌譜に残り、あとから開けます',
+    ],
+    image: 'result',
+    alt: 'リザルトの画面。精度のゲージと、巡ごとの和了率のグラフ',
+  },
+  {
+    title: '間違えた手を復習',
+    text: '対局で △・× だった手は、過去 30 日分たまって、問題形式で、復習することができます。',
+    image: 'review',
+    alt: '復習の画面。今日の 10 問と、過去 30 日間の間違えた問題の一覧',
+  },
+  {
+    title: '成績',
+    text: '平均精度、△・× の割合、平均聴牌ツモ数、流局率、精度の推移、間違いの理由 (受け入れ・待ちの形・ドラ・打点・立直の判断など) の内訳を見られます。',
+    image: 'stats',
+    alt: '成績の画面。平均精度と、精度の推移のグラフ',
+  },
+];
+const faqs = [
+  {
+    question: '無料で使えますか？',
+    answer:
+      'はい。対局と判定、リザルト、今日の 10 問の復習は無料です。詳細と成績は、広告を見ると 24 時間見られます。',
+  },
+  { question: 'iPad でも使えますか？', answer: 'はい。iPhone と iPad で使えます。' },
+  {
+    question: 'オフラインでも使えますか？',
+    answer:
+      '対局と判定は端末の中で計算するので、ネットにつながっていなくても使えます。広告を見て開く機能だけは、ネットが必要です。',
+  },
+  {
+    question: '記録はどこに保存されますか？',
+    answer: '対局の記録、成績、復習の問題は、お使いの端末の中にだけ保存します。',
+  },
+];
 ---
 
-<Base title="サンソー - 何切る問題・牌効率トレーニング" header={false}>
-  <main class="hero">
-    <img class="hero-icon" src="/favicon.svg" alt="" width="128" height="128">
-    <h1>サンソー</h1>
-    <p class="hero-subtitle">何切る問題・牌効率トレーニング</p>
-    <p class="hero-lead">配牌からツモ和了まで一人で打ち、切った牌を ◎○△✕ で判定する麻雀の練習アプリです。</p>
-    <!-- id は App Store Connect の Apple ID。バッジは Apple の公式 (toolbox.marketingtools.apple.com) -->
-    <a class="hero-store" href="https://apps.apple.com/jp/app/id6817753196">
-      <picture>
-        <source srcset="/app-store-badge-white.svg" media="(prefers-color-scheme: dark)">
-        <img src="/app-store-badge-black.svg" alt="App Store からダウンロード" width="131" height="48">
-      </picture>
-    </a>
+<Base title="サンソー - 何切る問題・牌効率トレーニング" current="app" wide>
+  <main class="lp">
+    <section class="lp-hero">
+      <div class="lp-hero-text">
+        <p class="lp-kicker">
+          <img src="/favicon.svg" alt="" width="32" height="32" />
+          サンソー
+        </p>
+        <h1>何切る問題トレーニング<br />期待値で牌効率を学習</h1>
+        <p class="lp-lead">
+          牌効率を、打ちながら身につける。切るたびに最善の牌が分かり、自分が切った牌とどこが違ったのかを、その場で確かめられます。
+        </p>
+        <a class="lp-store" href={APP_STORE_URL}>
+          <picture>
+            <source srcset="/app-store-badge-white.svg" media="(prefers-color-scheme: dark)" />
+            <img src="/app-store-badge-black.svg" alt="App Store からダウンロード" width="131" height="48" />
+          </picture>
+        </a>
+      </div>
+      <img
+        class="lp-hero-image"
+        src="/images/lp/play.webp"
+        alt="対局の画面。手牌と河、切った牌の判定「最良」"
+        width="2000"
+        height="1248"
+      />
+    </section>
+
+    <section class="lp-box lp-intro">
+      <ul class="lp-judgements">
+        {
+          judgements.map((judgement) => (
+            <li class={`lp-judgement lp-judgement-${judgement.tone}`}>
+              <span class="lp-judgement-mark">{judgement.symbol}</span>
+              <span class="lp-judgement-name">{judgement.name}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p>
+        配牌からツモ和了まで、一人で打ち続けて牌効率を鍛える麻雀アプリです。<br />切った牌はその場で ◎ 最良・○ 良・△ 可・× 不可 の 4 段階で判定します。
+      </p>
+    </section>
+
+    {
+      features.map((feature, index) => (
+        <section class:list={['lp-feature', { 'lp-feature-reverse': index % 2 === 1 }]}>
+          <div class="lp-feature-text">
+            <h2>{feature.title}</h2>
+            {feature.items ? (
+              <ul>
+                {feature.items.map((item) => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            ) : (
+              <p>{feature.text}</p>
+            )}
+          </div>
+          <img
+            class="lp-feature-image"
+            src={`/images/lp/${feature.image}.webp`}
+            alt={feature.alt}
+            width="1600"
+            height="770"
+            loading="lazy"
+          />
+        </section>
+      ))
+    }
+
+    <section class="lp-box lp-formula-box">
+      <h2>和了率 × 打点で比べる</h2>
+      <div class="lp-formula" role="img" aria-label="和了率 × 平均打点 = 期待値">
+        <div class="lp-formula-term">
+          <span class="lp-formula-word">和了率</span>
+          <span class="lp-formula-note">18 巡以内にツモ和了する確率</span>
+        </div>
+        <span class="lp-formula-operator">×</span>
+        <div class="lp-formula-term">
+          <span class="lp-formula-word">平均打点</span>
+          <span class="lp-formula-note">和了したときの平均の点</span>
+        </div>
+        <span class="lp-formula-operator">=</span>
+        <div class="lp-formula-term">
+          <span class="lp-formula-word lp-formula-result">期待値</span>
+          <span class="lp-formula-note">判定のもと</span>
+        </div>
+      </div>
+      <p>
+        判定のもとは「18 巡以内にツモ和了する確率 × 和了したときの平均の点」です。受け入れの枚数だけでなく、役・ドラ・赤5・立直か黙聴か・裏ドラまで入れて、どの牌を切るのが一番得かを比べます。1 向聴と聴牌では手変わりも読み、実戦で他家に先に和了られる確率も入れています。
+      </p>
+    </section>
+
+    <section class="lp-box lp-rules">
+      <h2>ルール</h2>
+      <p>
+        親 (東家) で、王牌を除く山を一人ですべて引きます。鳴き・ロンはなく、門前でツモ和了を目指します。赤5・暗槓あり。一般形・七対子・国士無双に対応しています。
+      </p>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title">料金</h2>
+      <div class="lp-plans">
+        <div class="lp-plan">
+          <p class="lp-plan-name">無料</p>
+          <ul>
+            <li>対局と ◎○△× の判定、リザルト</li>
+            <li>今日の 10 問の復習</li>
+            <li>詳細と成績は、広告を見ると 24 時間</li>
+          </ul>
+        </div>
+        <div class="lp-plan lp-plan-premium">
+          <p class="lp-plan-name">サンソープレミアム</p>
+          <p class="lp-plan-price">月額 980 円・年額 7,800 円</p>
+          <ul>
+            <li>詳細と成績がいつでも見られる</li>
+            <li>過去 30 日間の間違えた問題を復習できる</li>
+            <li>広告なし</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="lp-section">
+      <h2 class="lp-section-title">よくある質問</h2>
+      <div class="lp-faq">
+        {
+          faqs.map((faq) => (
+            <details>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    {
+      articles.length > 0 && (
+        <section class="lp-section lp-articles">
+          <div class="lp-articles-header">
+            <h2>記事</h2>
+            <a href="/articles">すべての記事 ›</a>
+          </div>
+          <ul>
+            {articles.map((article) => (
+              <li>
+                <a href={`/articles/${article.id}`}>
+                  <time datetime={article.data.date.toISOString().slice(0, 10)}>
+                    {formatShortDate(article.data.date)}
+                  </time>
+                  {article.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <section class="lp-box lp-cta">
+      <img class="lp-cta-icon" src="/favicon.svg" alt="" width="72" height="72" />
+      <p class="lp-cta-title">サンソー - 何切る問題・牌効率トレーニング</p>
+      <a class="lp-store" href={APP_STORE_URL}>
+        <picture>
+          <source srcset="/app-store-badge-white.svg" media="(prefers-color-scheme: dark)" />
+          <img src="/app-store-badge-black.svg" alt="App Store からダウンロード" width="131" height="48" />
+        </picture>
+      </a>
+    </section>
   </main>
 </Base>
