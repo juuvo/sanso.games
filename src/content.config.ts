@@ -12,6 +12,8 @@ const articles = defineCollection({
     description: z.string(), // 一覧の一行と、検索・リンクのカードの説明
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),
+    // 公開した順の通し番号 (大きいほど新しい)。同じ日付の記事の並び (一覧・前後の記事・RSS) に使う。ページには出さない
+    order: z.number().default(0),
     tags: z.array(z.string()).default([]), // 種類。ページには出さない (一覧を分けるときに使う)
     // 何切るの問題 (あれば、本文の前に出して、本文は「答えを見る」でたたむ)
     question: z

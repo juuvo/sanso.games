@@ -2,11 +2,14 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Article = CollectionEntry<'articles'>;
 
-// 公開する記事を新しい順に。下書きは開発中 (astro dev) と、SHOW_DRAFTS=1 のビルドだけで出す
+// 公開する記事を新しい順に (同じ日付は order の大きい方が先)。下書きは開発中 (astro dev) と、SHOW_DRAFTS=1 のビルド
+// だけで出す
 export async function getArticles(): Promise<Article[]> {
   const showDrafts = import.meta.env.DEV || process.env.SHOW_DRAFTS === '1';
   const articles = await getCollection('articles', (article) => showDrafts || !article.data.draft);
-  return articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  return articles.sort(
+    (a, b) => b.data.date.getTime() - a.data.date.getTime() || b.data.order - a.data.order,
+  );
 }
 
 // 一覧のカードと前後の記事に出す手牌と場況。何切るの問題はその問題、読み物は card (無ければ出さない)
