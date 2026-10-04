@@ -1,0 +1,24 @@
+<!doctype html>
+<!-- OGP の画像 (public/og.png) の元。Chrome で 1200×630 に書き出す:
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --hide-scrollbars --window-size=1200,630 --screenshot=public/og.png "file://$PWD/og/og.html"
+  LINE などは真ん中の 630 四方に切り取るので、中身はその中に置く (2026-10-04) -->
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<style>
+html, body { margin: 0; }
+body { width: 1200px; height: 630px; background: #ffffff; color: #1a1a1a; font-family: -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Hiragino Kaku Gothic ProN", sans-serif; display: flex; align-items: center; justify-content: center; }
+.stack { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.icon { width: 176px; height: 176px; border-radius: 22%; box-shadow: 0 0 0 2px #e3e3df; }
+.name { margin-top: 28px; font-size: 56px; font-weight: 800; letter-spacing: 0.08em; line-height: 1.2; }
+.lead { margin-top: 18px; font-size: 32px; font-weight: 700; line-height: 1.45; color: #00752f; }
+</style>
+</head>
+<body>
+<div class="stack">
+  <img class="icon" src="../public/favicon.svg" alt="">
+  <div class="name">サンソー</div>
+  <div class="lead">何切る問題トレーニング<br>期待値で牌効率を学習</div>
+</div>
+</body>
+</html>
