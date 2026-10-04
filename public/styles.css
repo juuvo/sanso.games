@@ -6,7 +6,7 @@
   --color-text-muted: #6b6b66;
   --color-divider: #e3e3df;
   --color-rule: #efefec;
-  --color-band: #f4f7f5; /* 記事のページの下のアプリの帯 */
+  --color-band: #f4f7f5; /* 記事のページの下のアプリの帯と、一覧のカードの手牌の地 */
   --color-accent: #00752f;
   --color-equal: #00752f;
   --color-close: #4c6fa5;
@@ -246,7 +246,8 @@ a:hover {
   font-weight: 700;
 }
 
-/* 記事の一覧 (一覧 A): 日付・題・一行の説明を線で区切る */
+/* 記事の一覧 (一覧 1 改): 手牌の絵のカードを新しい順に。広い画面は 3 列、中くらいは 2 列、スマホは 1 列 (カードの
+   手牌の絵 270px が欠けない幅で列を変える) */
 .articles {
   padding: 48px 0 64px;
 }
@@ -261,41 +262,56 @@ a:hover {
   color: var(--color-text-muted);
   font-size: 15px;
 }
-.article-list {
-  margin: 24px 0 0;
+.article-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 32px 0 0;
   padding: 0;
   list-style: none;
-  border-top: 1px solid var(--color-divider);
 }
-.article-list li {
-  border-bottom: 1px solid var(--color-divider);
-}
-.article-list a {
+.article-cards a {
   display: block;
-  padding: 20px 0;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--color-divider);
+  border-radius: 12px;
   color: var(--color-text);
   text-decoration: none;
 }
-.article-list time {
-  display: block;
-  color: var(--color-text-muted);
-  font-size: 13px;
+.article-cards a:hover .article-card-title {
+  color: var(--color-accent);
 }
-.article-list-title {
+.article-card-hand {
+  display: flex;
+  justify-content: center;
+  padding: 24px 8px 20px;
+  background: var(--color-band);
+}
+.article-card-body {
   display: block;
-  margin-top: 4px;
-  font-size: 18px;
+  padding: 14px 16px 16px;
+}
+.article-card-title {
+  display: block;
   font-weight: 700;
   line-height: 1.5;
 }
-.article-list a:hover .article-list-title {
-  color: var(--color-accent);
-}
-.article-list-description {
+.article-card-situation {
   display: block;
   margin-top: 4px;
   color: var(--color-text-muted);
-  font-size: 15px;
+  font-size: 13px;
+}
+@media (max-width: 960px) {
+  .article-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .article-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
 
 /* 記事のページ (記事 B): 問題の後ろに「答えを見る」でたたんだ本文 */
@@ -433,14 +449,14 @@ a:hover {
   max-width: 720px;
   margin: 0 auto;
 }
-@media (min-width: 1000px) {
+@media (min-width: 1080px) {
   .article-layout {
     grid-template-columns: minmax(0, 720px) 300px;
     gap: 56px;
     max-width: none;
   }
 }
-/* 前後の記事 (前 = 古い記事を左、次 = 新しい記事を右)。問題の記事は手牌の小さな絵も */
+/* 前後の記事 (前 = 古い記事を左、次 = 新しい記事を右)。手牌の小さな絵 (幅 270px) が欠けない幅までは 2 列 */
 .article-pager {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -480,7 +496,7 @@ a:hover {
 .article-pager-newer .article-pager-hand {
   justify-content: flex-end;
 }
-@media (max-width: 600px) {
+@media (max-width: 720px) {
   .article-pager {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -574,7 +590,7 @@ a:hover {
   margin-top: 12px;
   font-size: 14px;
 }
-@media (min-width: 1000px) {
+@media (min-width: 1080px) {
   .article-side {
     padding-top: 48px;
   }

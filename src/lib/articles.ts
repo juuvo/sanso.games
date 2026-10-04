@@ -9,6 +9,13 @@ export async function getArticles(): Promise<Article[]> {
   return articles.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 }
 
+// 一覧のカードと前後の記事に出す手牌と場況。何切るの問題はその問題、読み物は card (無ければ出さない)
+export function getArticleHand(
+  article: Article,
+): { situation: string; hand: string; draw?: string } | undefined {
+  return article.data.question ?? article.data.card;
+}
+
 // 「2026年10月10日」
 export function formatDate(date: Date): string {
   return `${date.getFullYear()}年${date.getMonth() + 1}月${date.getDate()}日`;

@@ -23,6 +23,14 @@ const articles = defineCollection({
         prompt: z.string(), // 「何を切りますか？」
       })
       .optional(),
+    // 読み物の記事の一覧のカードと前後の記事に出す手牌と場況 (問題の記事は question のものを出す。2026-10-04 のユーザー決定)
+    card: z
+      .object({
+        situation: z.string(), // 「東場・親・ドラ 2索」
+        hand: z.string(), // 手牌 (Hand の書き方)
+        draw: z.string().optional(), // ツモ牌
+      })
+      .optional(),
     draft: z.boolean().default(false), // 下書き (本番のビルドに出さない)
   }),
 });

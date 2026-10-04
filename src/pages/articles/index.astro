@@ -1,16 +1,18 @@
 ---
-// 記事の一覧 (2026-10-04 のユーザー決定、モック「sanso.games の記事の見た目」の一覧 A): 日付・題・一行の説明を 1px の
-// 線で区切って新しい順に
+// 記事の一覧 (2026-10-04 のユーザー決定、モック「sanso.games の記事ページの横と下」の一覧 1 改): 手牌の絵のカードを新しい
+// 順に並べる。番号は書かず、何切る問題と読み物も分けない。カードは手牌の絵・題・場況 (読み物は記事の card の手牌)
+import Hand from '../../components/Hand.astro';
 import Base from '../../layouts/Base.astro';
-import { formatShortDate, getArticles } from '../../lib/articles';
+import { getArticleHand, getArticles } from '../../lib/articles';
 
-const articles = await getArticles();
+const articles = (await getArticles()).map((article) => ({ article, hand: getArticleHand(article) }));
 ---
 
 <Base
   title="記事 - サンソー"
   description="牌効率と何切るの考え方を、和了率と打点の期待値で解説します。"
   current="articles"
+  wide
 >
   <main class="articles">
     <h1>記事</h1>
@@ -19,15 +21,19 @@ const articles = await getArticles();
       articles.length === 0 ? (
         <p class="articles-empty">記事はまだありません。</p>
       ) : (
-        <ul class="article-list">
-          {articles.map((article) => (
+        <ul class="article-cards">
+          {articles.map(({ article, hand }) => (
             <li>
               <a href={`/articles/${article.id}`}>
-                <time datetime={article.data.date.toISOString().slice(0, 10)}>
-                  {formatShortDate(article.data.date)}
-                </time>
-                <span class="article-list-title">{article.data.title}</span>
-                <span class="article-list-description">{article.data.description}</span>
+                {hand && (
+                  <div class="article-card-hand" aria-hidden="true">
+                    <Hand tiles={hand.hand} draw={hand.draw} size="thumb" />
+                  </div>
+                )}
+                <span class="article-card-body">
+                  <span class="article-card-title">{article.data.title}</span>
+                  <span class="article-card-situation">{hand ? hand.situation : article.data.description}</span>
+                </span>
               </a>
             </li>
           ))}

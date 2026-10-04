@@ -9,7 +9,7 @@ import { render } from 'astro:content';
 import Hand from '../../components/Hand.astro';
 import Base from '../../layouts/Base.astro';
 import { getAppStoreUrl } from '../../lib/app-store';
-import { formatDate, getArticles, type Article } from '../../lib/articles';
+import { formatDate, getArticleHand, getArticles, type Article } from '../../lib/articles';
 
 export async function getStaticPaths() {
   const articles = await getArticles();
@@ -33,7 +33,7 @@ const older = index >= 0 && index < articles.length - 1 ? articles[index + 1] : 
 const pager = [
   { item: older, label: '← 前の記事', className: 'article-pager-older' },
   { item: newer, label: '次の記事 →', className: 'article-pager-newer' },
-];
+].map((link) => ({ ...link, hand: link.item && getArticleHand(link.item) }));
 // 右の欄の記事の一覧は新しい順に 10 本まで (残りは「すべての記事」から)
 const SIDE_LIST_COUNT = 10;
 const listed = articles.slice(0, SIDE_LIST_COUNT);
@@ -88,14 +88,14 @@ const isoDate = (value: Date) => value.toISOString().slice(0, 10);
       }
       <nav class="article-pager" aria-label="前後の記事">
         {
-          pager.map(({ item, label, className }) =>
+          pager.map(({ item, label, className, hand }) =>
             item ? (
               <a class={className} href={`/articles/${item.id}`}>
                 <span class="article-pager-label">{label}</span>
                 <span class="article-pager-title">{item.data.title}</span>
-                {item.data.question && (
+                {hand && (
                   <div class="article-pager-hand" aria-hidden="true">
-                    <Hand tiles={item.data.question.hand} draw={item.data.question.draw} size="thumb" />
+                    <Hand tiles={hand.hand} draw={hand.draw} size="thumb" />
                   </div>
                 )}
               </a>
