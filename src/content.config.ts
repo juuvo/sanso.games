@@ -12,7 +12,7 @@ const articles = defineCollection({
     description: z.string(), // 一覧の一行と、検索・リンクのカードの説明
     date: z.coerce.date(),
     updated: z.coerce.date().optional(),
-    tags: z.array(z.string()).default([]),
+    tags: z.array(z.string()).default([]), // 種類。ページには出さない (一覧を分けるときに使う)
     // 何切るの問題 (あれば、本文の前に出して、本文は「答えを見る」でたたむ)
     question: z
       .object({

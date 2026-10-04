@@ -19,22 +19,15 @@ interface Props {
 
 const { article, articles } = Astro.props;
 const { Content } = await render(article);
-const { title, description, date, updated, tags, question } = article.data;
+// 種類 (tags) はページに出さない (答えが透けるうえ、ほとんどが何切るなので。2026-10-04 のユーザーの決め)。記事が増えて
+// 一覧を分けるときに使う
+const { title, description, date, updated, question } = article.data;
 const others = articles.filter((item) => item.id !== article.id).slice(0, 3);
 const isoDate = (value: Date) => value.toISOString().slice(0, 10);
 ---
 
 <Base title={`${title} - サンソー`} description={description} current="articles" ogType="article">
   <main class="article">
-    {
-      tags.length > 0 && (
-        <ul class="article-tags">
-          {tags.map((tag) => (
-            <li>{tag}</li>
-          ))}
-        </ul>
-      )
-    }
     <h1>{title}</h1>
     <p class="article-date">
       <time datetime={isoDate(date)}>{formatDate(date)}</time>
