@@ -3,7 +3,8 @@ import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
 // 記事 (牌効率・何切るの解説)。src/content/articles の Markdown / MDX。ファイル名が URL になる (/articles/<ファイル名>)。
-// 何切るの問題は手牌・ドラ・巡目だけで出し、河に左右されない形にする (数字も河は空として計算。2026-10-04 のユーザーの決め)
+// 何切るの問題は手牌とドラだけで出し、河と巡目に左右されない局面にする (数字も河は空として計算し、1〜12巡目で答えが変わらない
+// ことを確かめる。2026-10-04 のユーザーの決め)
 const articles = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/articles' }),
   schema: z.object({
@@ -15,7 +16,7 @@ const articles = defineCollection({
     // 何切るの問題 (あれば、本文の前に出して、本文は「答えを見る」でたたむ)
     question: z
       .object({
-        situation: z.string(), // 「東場・親・6巡目・ドラ 二索」
+        situation: z.string(), // 「東場・親・ドラ 中」
         doraIndicator: z.string().optional(), // ドラ表示牌 (Hand の書き方。牌の絵で出す)
         hand: z.string(), // 手牌 13 枚 (Hand の書き方)
         draw: z.string().optional(), // ツモ牌
