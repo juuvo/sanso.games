@@ -16,6 +16,8 @@ npm run build      # dist/ に出力 (下書きは出ない。出すときは SH
 
 ## 記事を書く
 
+記事の形と決まりは [docs/articles.md](docs/articles.md)、ひな形は `templates/`、数字を出す台本はアプリのリポジトリの `scripts/articles/`。
+
 `src/content/articles/<URL にする名前>.mdx` を置く。ファイル名がそのまま `/articles/<名前>` になる。
 
 ```mdx
