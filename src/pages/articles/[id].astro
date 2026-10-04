@@ -1,6 +1,9 @@
 ---
 // 記事のページ (2026-10-04 のユーザー決定、モック「sanso.games の記事の見た目」の記事 B): 何切るの問題があれば本文の前に
-// 出し、本文 (答えと解説) は「答えを見る」でたたむ (details。スクリプトを使わない)。最後にアプリへの案内とほかの記事
+// 出し、本文 (答えと解説) は「答えを見る」でたたむ (details。スクリプトを使わない)。
+// 横と下 (同じ日のユーザー決定、モック「sanso.games の記事ページの横と下」の A 改 1): 広い画面では本文の右にアプリの案内と
+// 記事の一覧、本文の後ろに前後の記事、下の行の前に横幅いっぱいのアプリの帯。狭い画面では右の欄は本文の下に回り、アプリの
+// 案内は帯だけ。記事の一覧は何切る・読み物で分けず、番号も付けない
 import { render } from 'astro:content';
 
 import Hand from '../../components/Hand.astro';
@@ -23,76 +26,146 @@ const { Content } = await render(article);
 // 種類 (tags) はページに出さない (答えが透けるうえ、ほとんどが何切るなので。2026-10-04 のユーザーの決め)。記事が増えて
 // 一覧を分けるときに使う
 const { title, description, date, updated, question } = article.data;
-const others = articles.filter((item) => item.id !== article.id).slice(0, 3);
+// 一覧は新しい順なので、1 つ前が新しい記事 (次の記事)、1 つ後が古い記事 (前の記事)
+const index = articles.findIndex((item) => item.id === article.id);
+const newer = index > 0 ? articles[index - 1] : undefined;
+const older = index >= 0 && index < articles.length - 1 ? articles[index + 1] : undefined;
+const pager = [
+  { item: older, label: '← 前の記事', className: 'article-pager-older' },
+  { item: newer, label: '次の記事 →', className: 'article-pager-newer' },
+];
+// 右の欄の記事の一覧は新しい順に 10 本まで (残りは「すべての記事」から)
+const SIDE_LIST_COUNT = 10;
+const listed = articles.slice(0, SIDE_LIST_COUNT);
+const appStoreUrl = getAppStoreUrl(`article-${article.id}`);
 const isoDate = (value: Date) => value.toISOString().slice(0, 10);
 ---
 
-<Base title={`${title} - サンソー`} description={description} current="articles" ogType="article">
-  <main class="article">
-    <h1>{title}</h1>
-    <p class="article-date">
-      <time datetime={isoDate(date)}>{formatDate(date)}</time>
-      {updated && <span>(更新 <time datetime={isoDate(updated)}>{formatDate(updated)}</time>)</span>}
-    </p>
-    {/* どの記事にも、数字の出どころを最初に書く (2026-10-04 のユーザーの指示「全部の記事で最初にサンソーの計算エンジンを
-        使用していますみたいなことを書いたほうがいいかも」) */}
-    <p class="article-engine">
-      この記事の期待値・和了率・平均打点は、アプリ「<a href="/">サンソー</a>」の評価エンジンで計算しています。
-    </p>
-    {
-      question ? (
-        <>
-          <section class="article-question">
-            <h2>問題</h2>
-            <p class="article-situation">{question.situation}</p>
-            {question.doraIndicator && (
-              <div class="article-question-info">
-                <div class="article-info-item">
-                  <span class="article-info-label">ドラ表示牌</span>
-                  <Hand tiles={question.doraIndicator} size="small" />
+<Base title={`${title} - サンソー`} description={description} current="articles" ogType="article" wide>
+  <div class="article-layout">
+    <main class="article">
+      <h1>{title}</h1>
+      <p class="article-date">
+        <time datetime={isoDate(date)}>{formatDate(date)}</time>
+        {updated && <span>(更新 <time datetime={isoDate(updated)}>{formatDate(updated)}</time>)</span>}
+      </p>
+      {/* どの記事にも、数字の出どころを最初に書く (2026-10-04 のユーザーの指示「全部の記事で最初にサンソーの計算エンジンを
+          使用していますみたいなことを書いたほうがいいかも」) */}
+      <p class="article-engine">
+        この記事の期待値・和了率・平均打点は、アプリ「<a href="/">サンソー</a>」の評価エンジンで計算しています。
+      </p>
+      {
+        question ? (
+          <>
+            <section class="article-question">
+              <h2>問題</h2>
+              <p class="article-situation">{question.situation}</p>
+              {question.doraIndicator && (
+                <div class="article-question-info">
+                  <div class="article-info-item">
+                    <span class="article-info-label">ドラ表示牌</span>
+                    <Hand tiles={question.doraIndicator} size="small" />
+                  </div>
                 </div>
+              )}
+              <div class="article-hand">
+                <Hand tiles={question.hand} draw={question.draw} />
               </div>
-            )}
-            <div class="article-hand">
-              <Hand tiles={question.hand} draw={question.draw} />
-            </div>
-            <p>{question.prompt}</p>
-          </section>
-          <details class="article-answer">
-            <summary>答えを見る</summary>
-            <div class="article-body">
-              <Content components={{ Hand }} />
-            </div>
-          </details>
-        </>
-      ) : (
-        <div class="article-body">
-          <Content components={{ Hand }} />
+              <p>{question.prompt}</p>
+            </section>
+            <details class="article-answer">
+              <summary>答えを見る</summary>
+              <div class="article-body">
+                <Content components={{ Hand }} />
+              </div>
+            </details>
+          </>
+        ) : (
+          <div class="article-body">
+            <Content components={{ Hand }} />
+          </div>
+        )
+      }
+      <nav class="article-pager" aria-label="前後の記事">
+        {
+          pager.map(({ item, label, className }) =>
+            item ? (
+              <a class={className} href={`/articles/${item.id}`}>
+                <span class="article-pager-label">{label}</span>
+                <span class="article-pager-title">{item.data.title}</span>
+                {item.data.question && (
+                  <div class="article-pager-hand" aria-hidden="true">
+                    <Hand tiles={item.data.question.hand} draw={item.data.question.draw} size="thumb" />
+                  </div>
+                )}
+              </a>
+            ) : (
+              <span class={className} />
+            ),
+          )
+        }
+      </nav>
+    </main>
+    <aside class="article-side">
+      <section class="article-side-app">
+        <div class="article-side-app-name">
+          <img src="/favicon.svg" alt="" width="48" height="48" />
+          <div>
+            <p class="article-side-app-title">サンソー</p>
+            <p class="article-side-app-subtitle">何切る問題トレーニング</p>
+          </div>
         </div>
-      )
-    }
-    <aside class="article-app">
-      <div>
-        <p class="article-app-title">この形をアプリで練習する</p>
-        <p class="article-app-text">
-          配牌からツモ和了まで一人で打ち、切った牌を ◎○△✕ で判定します。
+        <p class="article-side-app-text">
+          牌効率を、打ちながら身につける。切るたびに最善の牌が分かり、自分が切った牌とどこが違ったのかを、その場で確かめられます。
         </p>
-      </div>
-      <a class="article-app-link" href={getAppStoreUrl(`article-${article.id}`)}>App Store で見る</a>
-    </aside>
-    {
-      others.length > 0 && (
-        <section class="article-others">
-          <h2>ほかの記事</h2>
-          <ul>
-            {others.map((item) => (
+        <a class="article-side-app-store" href={appStoreUrl}>
+          <img src="/app-store-badge-black.svg" alt="App Store からダウンロード" width="109" height="40" />
+        </a>
+      </section>
+      <section class="article-side-list">
+        <h2>記事の一覧</h2>
+        <ul>
+          {
+            listed.map((item) => (
               <li>
-                <a href={`/articles/${item.id}`}>{item.data.title}</a>
+                <a href={`/articles/${item.id}`} aria-current={item.id === article.id ? 'page' : undefined}>
+                  {item.data.title}
+                </a>
               </li>
-            ))}
-          </ul>
-        </section>
-      )
-    }
-  </main>
+            ))
+          }
+        </ul>
+        <a class="article-side-more" href="/articles">すべての記事 ›</a>
+      </section>
+    </aside>
+  </div>
+  <section class="app-band" slot="band" aria-label="アプリ">
+    <div class="app-band-inner">
+      <div>
+        <p class="app-band-name">
+          <img src="/favicon.svg" alt="" width="32" height="32" />
+          サンソー
+        </p>
+        {/* LP の見出しと同じく必ず 2 行 (行ごとに折り返さない) */}
+        <h2>
+          <span class="app-band-line">何切る問題トレーニング</span>
+          <span class="app-band-line">期待値で牌効率を学習</span>
+        </h2>
+        <p class="app-band-lead">
+          牌効率を、打ちながら身につける。切るたびに最善の牌が分かり、自分が切った牌とどこが違ったのかを、その場で確かめられます。
+        </p>
+        <a class="app-band-store" href={appStoreUrl}>
+          <img src="/app-store-badge-black.svg" alt="App Store からダウンロード" width="131" height="48" />
+        </a>
+      </div>
+      <img
+        class="app-band-image"
+        src="/images/lp/play.webp"
+        alt="対局の画面。手牌と河、切った牌の判定「最良」"
+        width="2000"
+        height="1248"
+        loading="lazy"
+      />
+    </div>
+  </section>
 </Base>

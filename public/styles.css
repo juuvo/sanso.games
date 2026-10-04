@@ -6,6 +6,7 @@
   --color-text-muted: #6b6b66;
   --color-divider: #e3e3df;
   --color-rule: #efefec;
+  --color-band: #f4f7f5; /* 記事のページの下のアプリの帯 */
   --color-accent: #00752f;
   --color-equal: #00752f;
   --color-close: #4c6fa5;
@@ -299,7 +300,7 @@ a:hover {
 
 /* 記事のページ (記事 B): 問題の後ろに「答えを見る」でたたんだ本文 */
 .article {
-  padding: 48px 0 64px;
+  padding-top: 48px;
 }
 .article h1 {
   margin: 0;
@@ -424,63 +425,229 @@ a:hover {
 .article-body th:not(:first-child) {
   text-align: right;
 }
-/* アプリへの案内 */
-.article-app {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
+/* 記事のページの横と下 (2026-10-04 のユーザー決定、モック「sanso.games の記事ページの横と下」の A 改 1)。広い画面では
+   本文の右にアプリの案内と記事の一覧の欄。狭い画面では欄は本文の下に回り、アプリの案内は下の帯だけにする */
+.article-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 720px;
+  margin: 0 auto;
+}
+@media (min-width: 1000px) {
+  .article-layout {
+    grid-template-columns: minmax(0, 720px) 300px;
+    gap: 56px;
+    max-width: none;
+  }
+}
+/* 前後の記事 (前 = 古い記事を左、次 = 新しい記事を右)。問題の記事は手牌の小さな絵も */
+.article-pager {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
   margin-top: 40px;
+}
+.article-pager a {
+  display: block;
+  padding: 16px;
+  border: 1px solid var(--color-divider);
+  border-radius: 12px;
+  color: var(--color-text);
+  text-decoration: none;
+}
+.article-pager a:hover .article-pager-title {
+  color: var(--color-accent);
+}
+.article-pager-newer {
+  grid-column: 2;
+  text-align: right;
+}
+.article-pager-label {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+.article-pager-title {
+  display: block;
+  margin-top: 2px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.article-pager-hand {
+  display: flex;
+  margin-top: 12px;
+}
+.article-pager-newer .article-pager-hand {
+  justify-content: flex-end;
+}
+@media (max-width: 600px) {
+  .article-pager {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .article-pager-newer {
+    grid-column: auto;
+    text-align: left;
+  }
+  .article-pager-newer .article-pager-hand {
+    justify-content: flex-start;
+  }
+  /* 前・次のどちらかが無いときの空きを詰める */
+  .article-pager span:empty {
+    display: none;
+  }
+}
+/* 右の欄 (狭い画面では本文の下) */
+.article-side {
+  padding-top: 40px;
+}
+.article-side h2 {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.article-side-app {
+  display: none;
   padding: 20px;
   border: 1px solid var(--color-divider);
   border-radius: 12px;
 }
-.article-app p {
-  margin: 0;
-}
-.article-app-title {
-  font-weight: 700;
-}
-.article-app-text {
-  color: var(--color-text-muted);
-  font-size: 14px;
-}
-.article-app-link {
-  display: inline-flex;
+.article-side-app-name {
+  display: flex;
   align-items: center;
-  height: 44px;
-  padding: 0 20px;
-  border-radius: 22px;
-  background: var(--color-text);
-  color: var(--color-background);
-  font-size: 14px;
-  font-weight: 700;
-  text-decoration: none;
+  gap: 12px;
 }
-.article-others {
-  margin-top: 40px;
+.article-side-app-name img {
+  border-radius: 22%;
+  box-shadow: 0 0 0 1px var(--color-divider);
 }
-.article-others h2 {
+.article-side-app p {
   margin: 0;
-  font-size: 17px;
 }
-.article-others ul {
+.article-side-app-title {
+  font-weight: 700;
+  line-height: 1.4;
+}
+.article-side-app-subtitle {
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+.article-side-app .article-side-app-text {
+  margin-top: 12px;
+  font-size: 14px;
+}
+/* Apple のバッジは画面の上で高さ 40px 以上にする決まり */
+.article-side-app-store {
+  display: inline-block;
+  margin-top: 14px;
+}
+.article-side-app-store img {
+  display: block;
+  width: auto;
+  height: 40px;
+}
+.article-side-list ul {
   margin: 8px 0 0;
   padding: 0;
   list-style: none;
+  border-top: 1px solid var(--color-divider);
 }
-.article-others li {
-  border-bottom: 1px solid var(--color-divider);
+.article-side-list li {
+  border-bottom: 1px solid var(--color-rule);
 }
-.article-others a {
+.article-side-list li a {
   display: block;
-  padding: 12px 0;
+  padding: 9px 0;
   color: var(--color-text);
+  font-size: 14px;
+  line-height: 1.5;
   text-decoration: none;
 }
-.article-others a:hover {
+.article-side-list li a:hover {
   color: var(--color-accent);
+}
+.article-side-list li a[aria-current="page"] {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+.article-side-more {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 14px;
+}
+@media (min-width: 1000px) {
+  .article-side {
+    padding-top: 48px;
+  }
+  .article-side-app {
+    display: block;
+  }
+  .article-side-list {
+    margin-top: 32px;
+  }
+}
+/* 記事のページの一番下 (下の行の前): 横幅いっぱいのアプリの帯。文言は LP の一番上と同じ */
+.app-band {
+  margin-top: 64px;
+  background: var(--color-band);
+}
+.app-band-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 48px;
+  align-items: center;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 56px 16px;
+}
+.app-band-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-weight: 700;
+}
+.app-band-name img {
+  border-radius: 22%;
+  box-shadow: 0 0 0 1px var(--color-divider);
+}
+/* 見出しは必ず 2 行: 行ごとに折り返さず、字の大きさは長い方の行 (11 字) が欄に入る大きさ (12 字分の余裕を見る)。
+   欄の幅は (画面の幅 − 左右の余白 32 − 間 48) / 2.1 */
+.app-band h2 {
+  margin: 16px 0 0;
+  font-size: min(32px, calc((100vw - 80px) / 2.1 / 12));
+  line-height: 1.4;
+}
+.app-band-line {
+  display: block;
+  white-space: nowrap;
+}
+.app-band-lead {
+  margin: 12px 0 0;
+}
+.app-band-store {
+  display: inline-block;
+  margin-top: 20px;
+}
+.app-band-store img {
+  display: block;
+  width: auto;
+  height: 48px;
+}
+.app-band-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+/* スマホ: 1 列に積む (文の後に画像) */
+@media (max-width: 760px) {
+  .app-band-inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding: 40px 16px;
+  }
+  .app-band h2 {
+    font-size: min(32px, calc((100vw - 32px) / 12));
+  }
 }
 
 /* 手牌 (src/components/Hand.astro)。牌の絵はアプリと同じ、地と厚みはアプリの色 (暗い画面でも牌は白いまま) */
@@ -528,6 +695,19 @@ a:hover {
 }
 .hand-small .tile-drawn {
   margin-left: 8px;
+}
+/* 記事の前後のリンクの小さな絵 */
+.hand-thumb .tile {
+  width: 18px;
+  padding-bottom: 3px;
+  border-radius: 2px;
+}
+.hand-thumb .tile-face {
+  height: 24px;
+  border-radius: 2px;
+}
+.hand-thumb .tile-drawn {
+  margin-left: 5px;
 }
 /* 狭い画面では牌を少し小さく (14 枚 + すき間が 375px の画面の幅に収まる大きさ) */
 @media (max-width: 600px) {

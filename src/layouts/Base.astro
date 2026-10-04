@@ -75,6 +75,10 @@ const pageOf = (name: Props['current']) => (current === name ? 'page' : undefine
     }
     <div class={wide ? 'page page-wide' : 'page'}>
       <slot />
+    </div>
+    {/* 本文と下の行の間に、横幅いっぱいで置くもの (記事のページのアプリの帯) */}
+    <slot name="band" />
+    <div class={wide ? 'page page-wide' : 'page'}>
       <footer class="site-footer">
         <ul>
           <li><a href="/articles" aria-current={pageOf('articles')}>記事</a></li>
