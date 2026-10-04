@@ -314,6 +314,11 @@ a:hover {
 .article-date span {
   margin-left: 8px;
 }
+.article-engine {
+  margin: 4px 0 0;
+  color: var(--color-text-muted);
+  font-size: 14px;
+}
 .article h2 {
   margin: 32px 0 0;
   font-size: 20px;

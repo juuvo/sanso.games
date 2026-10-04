@@ -33,6 +33,11 @@ const isoDate = (value: Date) => value.toISOString().slice(0, 10);
       <time datetime={isoDate(date)}>{formatDate(date)}</time>
       {updated && <span>(更新 <time datetime={isoDate(updated)}>{formatDate(updated)}</time>)</span>}
     </p>
+    {/* どの記事にも、数字の出どころを最初に書く (2026-10-04 のユーザーの指示「全部の記事で最初にサンソーの計算エンジンを
+        使用していますみたいなことを書いたほうがいいかも」) */}
+    <p class="article-engine">
+      この記事の期待値・和了率・平均打点は、アプリ「<a href="/">サンソー</a>」の評価エンジンで計算しています。
+    </p>
     {
       question ? (
         <>
