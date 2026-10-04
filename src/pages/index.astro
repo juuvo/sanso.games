@@ -3,10 +3,10 @@
 // App Store Connect の説明文と 1 枚目のスクショの見出し)。付箋の 3 か所 (見出しの行・一番上の「サンソー」の前・最後の枠
 // の上) にアプリのアイコン
 import Base from '../layouts/Base.astro';
+import { getAppStoreUrl } from '../lib/app-store';
 import { formatShortDate, getArticles } from '../lib/articles';
 
 const articles = (await getArticles()).slice(0, 2);
-const APP_STORE_URL = 'https://apps.apple.com/jp/app/id6817753196';
 const judgements = [
   { symbol: '◎', name: '最良', tone: 'equal' },
   { symbol: '○', name: '良', tone: 'close' },
@@ -85,7 +85,7 @@ const faqs = [
         <p class="lp-lead">
           牌効率を、打ちながら身につける。切るたびに最善の牌が分かり、自分が切った牌とどこが違ったのかを、その場で確かめられます。
         </p>
-        <a class="lp-store" href={APP_STORE_URL}>
+        <a class="lp-store" href={getAppStoreUrl('lp-hero')}>
           <picture>
             <img src="/app-store-badge-black.svg" alt="App Store からダウンロード" width="131" height="48" />
           </picture>
@@ -236,7 +236,7 @@ const faqs = [
     <section class="lp-box lp-cta">
       <img class="lp-cta-icon" src="/favicon.svg" alt="" width="72" height="72" />
       <p class="lp-cta-title">サンソー - 何切る問題・牌効率トレーニング</p>
-      <a class="lp-store" href={APP_STORE_URL}>
+      <a class="lp-store" href={getAppStoreUrl('lp-cta')}>
         <picture>
           <img src="/app-store-badge-black.svg" alt="App Store からダウンロード" width="131" height="48" />
         </picture>

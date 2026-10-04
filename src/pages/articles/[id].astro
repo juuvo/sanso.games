@@ -5,6 +5,7 @@ import { render } from 'astro:content';
 
 import Hand from '../../components/Hand.astro';
 import Base from '../../layouts/Base.astro';
+import { getAppStoreUrl } from '../../lib/app-store';
 import { formatDate, getArticles, type Article } from '../../lib/articles';
 
 export async function getStaticPaths() {
@@ -77,7 +78,7 @@ const isoDate = (value: Date) => value.toISOString().slice(0, 10);
           配牌からツモ和了まで一人で打ち、切った牌を ◎○△✕ で判定します。
         </p>
       </div>
-      <a class="article-app-link" href="https://apps.apple.com/jp/app/id6817753196">App Store で見る</a>
+      <a class="article-app-link" href={getAppStoreUrl(`article-${article.id}`)}>App Store で見る</a>
     </aside>
     {
       others.length > 0 && (

@@ -1,6 +1,8 @@
 # Cloudflare Pages の応答ヘッダー (2026-10-02 に Vercel の vercel.json から移した。Vercel の Hobby は商用不可のため)
+# 2026-10-04: 閲覧数を Cloudflare Web Analytics で数えるため、その計測のスクリプト (static.cloudflareinsights.com) と送り先
+# (自分のドメインの /cdn-cgi/rum と cloudflareinsights.com) だけ許す。ほかのスクリプトは今までどおり使わない
 /*
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
-  Content-Security-Policy: default-src 'self'; script-src 'none'; style-src 'self'; img-src 'self' data:; connect-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'none'
+  Content-Security-Policy: default-src 'self'; script-src https://static.cloudflareinsights.com; style-src 'self'; img-src 'self' data:; connect-src 'self' https://cloudflareinsights.com; frame-ancestors 'none'; base-uri 'self'; form-action 'none'
